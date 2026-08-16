@@ -41,8 +41,7 @@ For each of the 10 features, three statistics are recorded — **mean**, **stand
 
 ## c. GitHub Repository Link
 
-> **https://github.com/YOUR_USERNAME/ml-classification-assignment**  
-> *(Replace with your actual GitHub repo URL after pushing)*
+> **https://github.com/girish-bits/classification-models-bitswilp**  
 
 Repository structure:
 ```
