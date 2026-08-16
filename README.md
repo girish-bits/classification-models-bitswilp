@@ -41,11 +41,11 @@ For each of the 10 features, three statistics are recorded — **mean**, **stand
 
 ## c. GitHub Repository Link
 
-> **https://github.com/girish-bits/classification-models-bitswilp**  
+> **https://github.com/girish-bits/classification-models-bitswilp**
 
 Repository structure:
 ```
-ml-classification-assignment/
+classification-models-bitswilp/
 ├── app.py                  # Streamlit application
 ├── requirements.txt        # Python dependencies
 ├── README.md               # This file
@@ -79,19 +79,18 @@ ml-classification-assignment/
 
 | ML Model Name | Observation about model performance |
 |---------------|-------------------------------------|
-| **Logistic Regression** | Achieves perfect scores (Accuracy, AUC, F1, MCC = 1.0) on the test set, demonstrating that the Breast Cancer Wisconsin feature space is linearly separable after StandardScaling. The linear decision boundary cleanly separates malignant and benign samples, with feature coefficients confirming that worst concave points and worst perimeter are the most discriminative features. |
-| **Decision Tree** | Lowest performance among the five models (Accuracy 0.9561, MCC 0.9080). Axis-aligned splits struggle with correlated features (radius, perimeter, and area are highly correlated), and the model is prone to overfitting without pruning. Hyperparameter tuning (max_depth, min_samples_leaf) would reduce variance and improve generalisation. |
-| **KNN** | Strong results (Accuracy 0.9825, AUC 0.9886, Recall 1.0). Benefits substantially from StandardScaling since KNN is distance-based — without scaling, large-range features like area would dominate. With k=5 the model achieves perfect recall, missing zero malignant cases, which is critical in medical diagnosis. |
-| **Naive Bayes** | Achieves perfect scores despite the conditional independence assumption being violated (many features are correlated). The Gaussian likelihood estimates fit the continuous features well, and the class-conditional distributions are sufficiently separated to yield perfect classification on the test split. |
-| **Random Forest** | Ties for top performer (perfect scores alongside LR and NB). The ensemble of 100 decision trees eliminates the single-tree variance problem, handles correlated features via random feature subsampling, and provides reliable probability estimates. Also produces the most interpretable feature importances for domain analysis. |
-| **Overall Winner** | **Random Forest** (tied with Logistic Regression and Naive Bayes for perfect test-set performance). Recommended as the production model because it provides feature importances, is robust to outliers, and generalises well across different data distributions. |
+| **Logistic Regression** | Achieves perfect scores across all 6 metrics (Accuracy=1.0, AUC=1.0, F1=1.0, MCC=1.0) on the test set. This demonstrates that the Breast Cancer Wisconsin feature space is **linearly separable** after StandardScaling. The model benefits greatly from feature scaling — without it, high-range features like area would distort the decision boundary. The high AUC (1.0) confirms near-perfect probability calibration, meaning the model assigns very high confidence to correct predictions. Being a linear model, it is also the most **interpretable** — feature coefficients reveal that `worst concave points`, `worst perimeter`, and `mean concave points` are the strongest predictors. Training time is fastest among all 5 models, making it ideal as a strong, lightweight baseline. |
+| **Decision Tree** | The only model that does not achieve perfect scores — Accuracy: 0.9561, AUC: 0.9558, MCC: 0.9080 — making it the **weakest performer** on this dataset. The main weakness is its tendency to **overfit** training data through deep, unconstrained splits. The axis-aligned decision boundaries struggle with the many correlated features in this dataset (e.g., radius, perimeter, and area are highly correlated). The lower AUC (0.9558) compared to all other models indicates poor probability estimation — it outputs hard probabilities (0 or 1) rather than calibrated soft probabilities. However, the model offers excellent **visual interpretability** via tree diagrams. Performance would improve significantly with hyperparameter tuning (max_depth ≤ 5, min_samples_leaf ≥ 5) or pruning strategies. |
+| **KNN** | Delivers strong results — Accuracy: 0.9825, AUC: 0.9886, Recall: 1.0 (perfect). The perfect Recall means the model correctly identifies **every single malignant case** in the test set — which is the most critical metric in medical diagnosis (missing a malignant tumour is far more dangerous than a false alarm). KNN is a **non-parametric, instance-based** learner that makes no assumptions about data distribution, which suits the complex, non-linear boundaries in this dataset. It depends heavily on StandardScaling — without normalisation, features with large ranges (like `area` ~ 1000) would completely overshadow features like `smoothness` ~ 0.1. The main limitation is **computational cost** at inference time since it stores the entire training set (455 samples × 30 features), making it slower than other models for real-time predictions. |
+| **Naive Bayes** | Achieves perfect scores (Accuracy=1.0, AUC=1.0, MCC=1.0) despite its **strong independence assumption** being clearly violated — many features in this dataset are highly correlated (e.g., radius, perimeter, and area are near-perfectly correlated). The reason it still works well is that the **class-conditional distributions** of malignant vs. benign samples are sufficiently separated in Gaussian feature space that even approximate likelihoods lead to correct classification. The Gaussian NB assumes each feature follows a normal distribution per class — this is a reasonable approximation for the standardised continuous features in this dataset. Its key advantages are **extremely fast training** and **no hyperparameters to tune**. However, the independence assumption limits its reliability on datasets with strong feature correlations, and it can produce poorly calibrated probability estimates in such cases. |
+| **Random Forest** | Ties for best performance with Logistic Regression and Naive Bayes (perfect scores across all metrics). As an **ensemble of 100 decision trees**, it overcomes the single Decision Tree's overfitting problem by averaging predictions across many trees trained on random data subsets (bagging) and random feature subsets at each split. This reduces variance without increasing bias. The random feature subsampling (√30 ≈ 5 features per split) effectively handles the correlated feature problem that hurt the single Decision Tree. Additional advantage: it provides **feature importances**, revealing that `worst concave points`, `worst area`, and `worst perimeter` are the top predictors — consistent with domain knowledge. It is also **robust to outliers and missing values**. The only drawback is higher training time and memory usage compared to simpler models. |
+| **Overall Winner** | **Random Forest** is the recommended production model — it ties for perfect test-set performance while also offering feature importances for interpretability, robustness to outliers, and strong generalisation across varied data distributions. While Logistic Regression also achieves perfect scores and is faster, Random Forest is preferred for high-stakes medical applications because it is less sensitive to feature correlation and new unseen data distributions. Decision Tree is the weakest performer and should not be used without pruning on this dataset. |
 
 ---
 
 ## Streamlit App
 
-> https://2025ac05343-girish.streamlit.app  
-
+> **https://2025ac05343-girish.streamlit.app**
 
 ### App Features
 - **Dataset upload** — upload any compatible test CSV via the sidebar
