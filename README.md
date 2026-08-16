@@ -90,8 +90,8 @@ ml-classification-assignment/
 
 ## Streamlit App
 
-> **https://YOUR_APP_NAME.streamlit.app**  
-> *(Replace with your Streamlit Community Cloud URL after deployment)*
+> https://2025ac05343-girish.streamlit.app  
+
 
 ### App Features
 - **Dataset upload** — upload any compatible test CSV via the sidebar
