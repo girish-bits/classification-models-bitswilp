@@ -2,6 +2,9 @@
 
 **BITS Pilani WILP · M.Tech AIML/DSE · Machine Learning · Assignment 2**
 
+
+**Maintained By** : Girish Mahesh Kulkarni
+
 ---
 
 ## a. Problem Statement
